@@ -1,24 +1,9 @@
 from app import db
-# from flask_sqlalchemy import SQLAlchemy
-# app = Flask(__name__)
-# #app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///blog.db'  заменить на другую строчку  
-# app.comfig['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-
-
-# db = SQLAlchemy(app)
-
-
-class Categories(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=True)
     name = db.Column(db.String(50), unique=True)
     slug_name = db.Column(db.String(50), unique=True)
 
-    def __init__(self, id, name, slug_name):
-        self.id = id
-        self.name = name
-        self.slug_name = slug_name
-
-    @property
     def serialize(self):
         return {
            'id'         : self.id,
@@ -27,37 +12,42 @@ class Categories(db.Model):
       }
 
     def __repr__(self):
-        return f'<categories {self/id}>'
+        return f'Category {self.id}-"{self.name}"-{self.slug_name}'
 
 
-class Subcategories(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+class Subcategory(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=True)
     name = db.Column(db.String(50), unique=True)
     slug_name = db.Column(db.String)
-    category_name= db.Column(db.String(50), db.ForeignKey(Categories.id))
+    category_id = db.Column(db.Integer, db.ForeignKey(Category.id))
 
-    def __init__(self, id, name, slug_name, category_name):
-        self.id = id
-        self.name = name
-        self.slug_name = slug_name
-        self.category_name = category_name
-
-    @property
     def serialize(self):
         return {
            'id'         : self.id,
            'name_subcategory': self.name,
            'slug_name'  : self.slug_name,
-           'category_name'  : self.category_name
+           'category_id'  : self.category_id
        }
 
-    #  @staticmethod
-    # def slugify(target, value, oldvalue, initiator):
-    #     if value and (not target.slug or value != oldvalue):
-    #         target.slug = slugify(value)
+    def __repr__(self):
+        return f'Subcategory {self.id}-"{self.name}"-{self.category_id}-{self.slug_name}'
+
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=True)
+    name = db.Column(db.String(50), unique=True)
+    slug_name = db.Column(db.String(50), unique=True)
+    subcategory_id = db.Column(db.Integer, db.ForeignKey(Subcategory.id))
+
+    def serialize(self):
+        return {
+        'id'              : self.id,
+        'name_product': self.name,
+        'slug_name'   : self.slug_name,
+        'subcategory_id' : self.subcategory_id
+        }
 
     def __repr__(self):
-        return f'<subcategories {self.id}>'
+        return f'Product {self.id}-"{self.name}"-{self.subcategory_id}-{self.slug_name}'
 
 
 

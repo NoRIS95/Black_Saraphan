@@ -1,0 +1,10 @@
+migrations/
+my_venv/
+.idea
+__pycache__
+app/static
+app.db
+app/migrations
+.env
+app/db
+alembic.ini

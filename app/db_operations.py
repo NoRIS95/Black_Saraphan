@@ -132,30 +132,31 @@ def get_products():
 
 
 def add_product():
-    subcategory_id = request.args,get("subcategory_id")
+    subcategory_id = request.args.get("subcategory_id")
     name = request.args.get("name")
     slug_name = request.args.get("slug_name")
     product = Product(subcategory_id=subcategory_id, name=name, slug_name=slug_name)
     db.session.add(product)
     db.session.commit()
+    db.session.flush()
+    db.session.refresh(product)
     for img_size in ['small', 'medium', 'large']:
-        img = Image.open(request.files[product.id+img_size])
+        img = Image.open(request.files['image_'+img_size])
         img.save(os.path.join(basedir, f'static/product_photo/{product.id}_{img_size}.jpeg'))  
     return jsonify(success=True)
 
 
-def delete_product():
-    subcategory_id = request.args.get("subcategory_id")
-    slug_name = request.args.get('slug_name')           
+def delete_product():    
     product_id = request.args.get('id')
     product = Product.query.filter_by(id=product_id).first()
-    location = 'home/ivan/PycharmProjects/Black_Saraphan/app/static/product_photo'
+    import pdb; pdb.set_trace
     for img_size in ['small', 'medium', 'large']:
-        os.remove(os.path.join(f'static/product_photo/'), f'{product.id}_{img_size}.jpeg') 
-    path = os.path.join(basedir, f'static/product_photo/{product.id}_{img_size}.jpeg')
-    os,remove(path)
+        path = os.path.join(basedir, f'static/product_photo/{product.id}_{img_size}.jpeg')
+        os.remove(path)
     db.session.delete(product)
     db.session.commit()
+    return jsonify(success=True)
+
 
 
 def edit_product():

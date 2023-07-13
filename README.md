@@ -3,8 +3,9 @@
 ### Инструкция по запуску бэкенд-сервера:
   1.Клонируем репозиторий с сайта GitHub и заходим в директорию с проектом:
   ```
-  git clone git@github.com:NoRIS95/Black_Saraphan.git
-  cd Black_Saraphan
+  git clone git@github.com:NoRIS95/Task2_for_Saraphan.git
+  cd Task2_for_Saraphan
+
   ```
   2.Создаём виртуальное окружение (в нашем случае оно будет называться env) и активируем его:
   ```

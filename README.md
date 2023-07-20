@@ -53,7 +53,7 @@
 ## REST API
   Примеры запросов для проверки работы манипуляций с категориями, подкатегориями и продуктами лежат в директории [tests/](tests/).
 ### Headers
-```{"Admin_token": <ADMIN_TOKEN>}
+{"Admin_token": <ADMIN_TOKEN>}
 ### Categories API
 #### Отображение категорий
 ```GET /categories```
